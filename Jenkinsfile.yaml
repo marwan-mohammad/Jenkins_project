@@ -94,22 +94,19 @@ spec:
             }
         }
         stage('Pull Configuration and Apply to Kubernetes') {
-            steps {
-                container('git') {
-                    script {
-                        sh "git clone ${GIT_REPO3} repo3"
-                    }
-                }
-                container('kubectl') {
-                    script {
-                        // Apply the Kubernetes configuration
-                    sh 'kubectl apply -f repo3/K8S'
-
+    steps {
+        container('git') {
+            script {
+                sh "git clone ${GIT_REPO3} repo3"
             }
-                    
+        }
+        container('kubectl') {  // Specify the 'kubectl' container
+            script {
+                dir('repo3/K8S') { 
+                    sh 'kubectl apply -f .'
                 }
             }
-
         }
     }
+}
 }
